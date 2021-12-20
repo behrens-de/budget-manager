@@ -13,6 +13,7 @@ function issetList(listname){
 }
 
 function createList(id,name){
+  // TODO: TEXT MUSS MINDESTEN 3 ZEICHEN LANG SEIN UND SOLLTE NOCH NICHT VORHANDEN SEIN
   STORAGE.addObject(LIST_STORAGE_NAME, {id, name});
 }
 
@@ -23,13 +24,35 @@ function setDefaultList() {
 
 function renderLists(){
   const lists = STORAGE.getObjects(LIST_STORAGE_NAME);
-  const div = document.querySelector('.lists');
-  div.innerHTML = null;
-  div.innerHTML += `<h2>Listen</h2>`;
+  const wrap = document.querySelector('.lists');
+  wrap.innerHTML = null;
+  wrap.innerHTML += `<h2>Listen</h2>`;
+
+
+
   lists.forEach(list=>{
-    div.innerHTML += `${list.name}<button>Löschen</button><br>`;
+
+    let div  = document.createElement('div');
+    let span = document.createElement('span');
+    span.innerText = list.name;
+
+    let btn = document.createElement('button');
+    btn.innerText = "Löschen";
+    btn.onclick = () => {
+      STORAGE.removeObject(LIST_STORAGE_NAME, 'id', list.id);
+      renderLists();
+    }
+
+    div.appendChild(span);
+    if(DEFAULT_LIST_NAME !== list.name) {
+      div.appendChild(btn);
+    }
+
+    wrap.appendChild(div);
   }) 
 }
+
+
 
 function newList(){
   const form = document.querySelector('#new-list');
@@ -42,6 +65,7 @@ function newList(){
     input.value = null;
   });
 }
+
 
 
 function init(){
