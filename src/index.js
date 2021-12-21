@@ -26,7 +26,7 @@ function renderLists(){
   const lists = STORAGE.getObjects(LIST_STORAGE_NAME);
   const wrap = document.querySelector('.lists');
   wrap.innerHTML = null;
-  wrap.innerHTML += `<h2>Listen</h2>`;
+  wrap.innerHTML += `<h2>Listen ${lists.length}</h2>`;
 
 
 
