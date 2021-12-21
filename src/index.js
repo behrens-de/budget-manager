@@ -1,6 +1,6 @@
 import { MyLocalStorage } from './MyLocalStorage';
+import { MyCalender } from './MyCalender';
 import { v4 as uuidv4 } from 'uuid';
-
 
 function restdays(date = new Date()) {
 
@@ -54,7 +54,7 @@ const spendAmount = document.querySelector('input[name="spend-amount"]');
 form.addEventListener('submit', addNewSpend);
 
 
-function addNewSpend(e){
+function addNewSpend(e) {
     e.preventDefault();
     const obj = {
         description: spendName.value,
@@ -64,5 +64,12 @@ function addNewSpend(e){
     }
 
     console.log(obj);
-    
+
 }
+const myCalender = new MyCalender();
+
+myCalender.create(new Date(2022,0,1));
+
+
+
+
