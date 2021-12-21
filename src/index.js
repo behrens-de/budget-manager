@@ -1,78 +1,68 @@
 import { MyLocalStorage } from './MyLocalStorage';
 import { v4 as uuidv4 } from 'uuid';
 
-const STORAGE = new MyLocalStorage;
-const LIST_STORAGE_NAME = 'lists';
-const DEFAULT_LIST_NAME = 'allgemein';
-// Setze eine Default Liste
 
-function issetList(listname){
-  const lists = STORAGE.getObjects(LIST_STORAGE_NAME);
-  lists.filter(list=>list.name === listname);
-  return lists.length > 0;
+function restdays(date = new Date()) {
+
+    let monthNames = ['Jan.', 'Feb.', 'Mär.', 'Apr.', 'Mai', 'Jun.', 'Jul.', 'Aug.', 'Sep.', 'Okt.', 'Nov', 'Dez.']
+    let thisMonth = date.getMonth();
+    let thisDay = date.getDate();
+
+    let fistDayThisMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+    let lastDayThisMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+
+    let timestampStart = date.getTime();
+    let timestampEnd = date.getTime();
+
+    let daysLeftThisMonth = lastDayThisMonth - thisDay;
+
+    return {
+        daysLeftThisMonth,
+        thisMonth,
+        nameOfMonth: monthNames[thisMonth],
+        thisDay
+    };
 }
 
-function createList(id,name){
-  // TODO: TEXT MUSS MINDESTEN 3 ZEICHEN LANG SEIN UND SOLLTE NOCH NICHT VORHANDEN SEIN
-  STORAGE.addObject(LIST_STORAGE_NAME, {id, name});
+console.log(restdays())
+
+function getDate() {
+
+    let today = new Date();
+    let mindate = new Date();
+    mindate.setDate(mindate.getDate() - 14);
+
+    let todayToString = today.toISOString().split("T")[0];
+    let minDateToString = mindate.toISOString().split("T")[0];
+
+    let datePicker = document.querySelector('input[type="date"]');
+
+    datePicker.value = todayToString;
+    datePicker.max = todayToString;
+    datePicker.min = minDateToString;
+
 }
 
-function setDefaultList() {
-  if(issetList(DEFAULT_LIST_NAME)) return;
-  createList(uuidv4(),DEFAULT_LIST_NAME);
-}
-
-function renderLists(){
-  const lists = STORAGE.getObjects(LIST_STORAGE_NAME);
-  const wrap = document.querySelector('.lists');
-  wrap.innerHTML = null;
-  wrap.innerHTML += `<h2>Listen ${lists.length}</h2>`;
+getDate();
 
 
 
-  lists.forEach(list=>{
-
-    let div  = document.createElement('div');
-    let span = document.createElement('span');
-    span.innerText = list.name;
-
-    let btn = document.createElement('button');
-    btn.innerText = "Löschen";
-    btn.onclick = () => {
-      STORAGE.removeObject(LIST_STORAGE_NAME, 'id', list.id);
-      renderLists();
-    }
-
-    div.appendChild(span);
-    if(DEFAULT_LIST_NAME !== list.name) {
-      div.appendChild(btn);
-    }
-
-    wrap.appendChild(div);
-  }) 
-}
+const form = document.querySelector('#new-spend');
+const spendName = document.querySelector('input[name="spend-name"]');
+const selectBudget = document.querySelector('select[name="select-budget"]');
+const spendAmount = document.querySelector('input[name="spend-amount"]');
+form.addEventListener('submit', addNewSpend);
 
 
-
-function newList(){
-  const form = document.querySelector('#new-list');
-  const input = form.querySelector('.list-name');
-
-  form.addEventListener('submit',(e)=>{
+function addNewSpend(e){
     e.preventDefault();
-    createList(uuidv4(),input.value);
-    renderLists();
-    input.value = null;
-  });
+    const obj = {
+        description: spendName.value,
+        time: new Date().getTime(),
+        budget: selectBudget.value,
+        amount: spendAmount
+    }
+
+    console.log(obj);
+    
 }
-
-
-
-function init(){
-  setDefaultList();
-  renderLists();
-  newList();
-}
-
-// Start the APP
-init();
