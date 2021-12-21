@@ -29,27 +29,61 @@ export class MyCalender {
 
     create(date = this.date) {
         let fistDayThisMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-        let lastDayThisMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+        let fistDayWeekDay = fistDayThisMonth.getDay();
+        let lastDayThisMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
+        let lastDayWeekDay = lastDayThisMonth.getDay();
 
+        fistDayWeekDay =  fistDayWeekDay === 0 ? 6 : (fistDayWeekDay-1);
+        lastDayWeekDay =  lastDayWeekDay === 0 ? 6 : (lastDayWeekDay-1);
 
-        let weekdays = ['Mo','Di','Mi','Do','Fr.','Sa.','So.'];
-
-
-        for (let i = 1; i <= lastDayThisMonth; i++) {
-            let day = i < 10 ? '0' + i : i;
-
-            const today = new Date(date.getFullYear(), date.getMonth(), i);
-            let weekDay = today.getDay();
-            // Deutsches anzeige format
-            weekDay = weekDay === 0 ? 6 : (weekDay-1);
-            if(weekDay === 0){
-                console.log('Neue KW'+this.weekNumber(today));
-            }
-
-            const format = `${weekdays[weekDay]})${day}.${today.getMonth() + 1}.${today.getFullYear()}`
-            console.log(format);
+        console.log('////PRV MONTH');
+        for(let i = fistDayWeekDay; i>= 1; i--){
+            const today = this.subDaysToDate(fistDayThisMonth,  i);
+            this.dateFormat(today); 
         }
 
+        console.log('////CURRENT MONTH');
+        for (let i = 1; i <= lastDayThisMonth.getDate(); i++) {
+            const today = new Date(date.getFullYear(), date.getMonth(), i);
+            this.dateFormat(today, i);
+        }
+
+        // Last days of the Last Week in the new Month        
+        console.log('////NEXT MONTH');
+        for(let i = 1; i<= (6-lastDayWeekDay); i++){
+            const today = this.addDaysToDate(lastDayThisMonth, i);
+            this.dateFormat(today); 
+        }
+
+       // console.log(fistDayWeekDay, 6-lastDayWeekDay)
+
+    }
+
+    addDaysToDate(date, days){
+        var res = new Date(date);
+        res.setDate(res.getDate() + days);
+        return res;
+    }
+
+    subDaysToDate(date, days){
+        var res = new Date(date);
+        res.setDate(res.getDate() - days);
+        return res;
+    }
+
+    dateFormat(today){
+        let weekdays = ['Mo','Di','Mi','Do','Fr.','Sa.','So.'];
+        let weekDay = today.getDay();
+        // Deutsches anzeige format
+        weekDay = weekDay === 0 ? 6 : (weekDay-1);
+        if(weekDay === 0){
+            console.log('Neue KW'+this.weekNumber(today));
+        }
+
+        let i = today.getDate();
+        let day = i < 10 ? '0' + i : i;
+        const format = `${weekdays[weekDay]})${day}.${today.getMonth() + 1}.${today.getFullYear()}`
+        console.log(format);
     }
 
 
