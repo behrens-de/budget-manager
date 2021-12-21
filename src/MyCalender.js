@@ -28,6 +28,7 @@ export class MyCalender {
     }
 
     create(date = this.date) {
+        let target = document.querySelector('#calender');
         let fistDayThisMonth = new Date(date.getFullYear(), date.getMonth(), 1);
         let fistDayWeekDay = fistDayThisMonth.getDay();
         let lastDayThisMonth = new Date(date.getFullYear(), date.getMonth() + 1, 0);
@@ -36,23 +37,46 @@ export class MyCalender {
         fistDayWeekDay =  fistDayWeekDay === 0 ? 6 : (fistDayWeekDay-1);
         lastDayWeekDay =  lastDayWeekDay === 0 ? 6 : (lastDayWeekDay-1);
 
+        let monthName = ['Januar', 'Februar', 'März',
+        'April', 'Mai', 'Juni',
+        'Juli', 'August', 'September',
+        'Oktober', 'November', 'Dezember']
+
+        const headline = document.createElement('h2');
+        headline.classList.add('calender-headline')
+        headline.innerHTML = `${monthName[date.getMonth()]} ${date.getFullYear()}`;
+
+        target.appendChild(headline);
+
         console.log('////PRV MONTH');
         for(let i = fistDayWeekDay; i>= 1; i--){
             const today = this.subDaysToDate(fistDayThisMonth,  i);
-            this.dateFormat(today); 
+            //this.dateFormat(today); 
+            const el = document.createElement('div');
+            el.innerHTML = this.dateFormat(today); 
+            el.classList.add('prev-days');
+            el.classList.add('calender-day');
+            target.appendChild(el);
         }
 
         console.log('////CURRENT MONTH');
         for (let i = 1; i <= lastDayThisMonth.getDate(); i++) {
             const today = new Date(date.getFullYear(), date.getMonth(), i);
-            this.dateFormat(today, i);
+            const el = document.createElement('div');
+            el.innerHTML = this.dateFormat(today); 
+            el.classList.add('calender-day');
+            target.appendChild(el);         
         }
 
         // Last days of the Last Week in the new Month        
         console.log('////NEXT MONTH');
         for(let i = 1; i<= (6-lastDayWeekDay); i++){
             const today = this.addDaysToDate(lastDayThisMonth, i);
-            this.dateFormat(today); 
+            const el = document.createElement('div');
+            el.innerHTML = this.dateFormat(today); 
+            el.classList.add('next-days');
+            el.classList.add('calender-day');
+            target.appendChild(el);  
         }
 
        // console.log(fistDayWeekDay, 6-lastDayWeekDay)
@@ -82,8 +106,11 @@ export class MyCalender {
 
         let i = today.getDate();
         let day = i < 10 ? '0' + i : i;
-        const format = `${weekdays[weekDay]})${day}.${today.getMonth() + 1}.${today.getFullYear()}`
-        console.log(format);
+
+        return day;
+
+        return `${weekdays[weekDay]})${day}.${today.getMonth() + 1}.${today.getFullYear()}`
+       
     }
 
 
