@@ -68,9 +68,9 @@ function addNewSpend(e) {
 }
 const myCalender = new MyCalender();
 
-myCalender.create(new Date(1984,6,1));
+//myCalender.create();
 
-//myCalender.create(new Date(2021,11,1));
+myCalender.create(new Date(2021,10,1));
 
 
 
