@@ -66,11 +66,14 @@ function addNewSpend(e) {
     console.log(obj);
 
 }
+
+
+
 const myCalender = new MyCalender();
+// INIT
+myCalender.create();
 
-//myCalender.create();
 
-myCalender.create(new Date(2021,10,1));
 
 
 
