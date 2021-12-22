@@ -9,7 +9,8 @@ export class MyCalender {
         this.date = date ?? new Date();
     }
 
-    _today = new Date();
+    _selectedDay = null;
+    _monthName = ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September','Oktober', 'November', 'Dezember'];
 
     setDate(date) {
         this.date = date ?? new Date();
@@ -40,6 +41,21 @@ export class MyCalender {
         }
     }
 
+    UI_Header_Button(){
+
+    }
+
+    UI_Header() {
+        const header = document.createElement('div');
+        header.classList.add('calender-headline');
+
+        const month = document.createElement('div');
+        const monthTXT = document.createElement('div');
+        monthTXT.innerHTML = this._monthName[date.getMonth()];
+
+
+    }
+
     create(date = this.date) {
         let target = document.querySelector('#calender');
         target.innerHTML = null;
@@ -51,51 +67,60 @@ export class MyCalender {
         fistDayWeekDay = fistDayWeekDay === 0 ? 6 : (fistDayWeekDay - 1);
         lastDayWeekDay = lastDayWeekDay === 0 ? 6 : (lastDayWeekDay - 1);
 
-        let monthName = ['Januar', 'Februar', 'März',
-            'April', 'Mai', 'Juni',
-            'Juli', 'August', 'September',
-            'Oktober', 'November', 'Dezember']
-
+// START
         const headline = document.createElement('div');
         headline.classList.add('calender-headline');
 
         const headlineMonth = document.createElement('div');
+
         const headlineMonthSpan = document.createElement('span');
-        headlineMonthSpan.innerHTML = monthName[date.getMonth()];
+        headlineMonthSpan.classList.add('change-txt');
+        headlineMonthSpan.innerHTML = this._monthName[date.getMonth()];
 
         const btnNextMonth = document.createElement('button');
         btnNextMonth.innerHTML = 'NEXT';
-        btnNextMonth.onclick = () =>{
-            this.create(new Date(date.getFullYear(),date.getMonth()+1,1));
+        btnNextMonth.classList.add('change-btn');
+        btnNextMonth.onclick = () => {
+            this.create(new Date(date.getFullYear(), date.getMonth() + 1, 1));
         }
 
         const btnLastMonth = document.createElement('button');
         btnLastMonth.innerHTML = 'Last';
-        btnLastMonth.onclick = () =>{
-            this.create(new Date(date.getFullYear(),date.getMonth()-1,1));
+        btnLastMonth.classList.add('change-btn');
+        btnLastMonth.classList.add('change-btn-left');
+        btnLastMonth.onclick = () => {
+            this.create(new Date(date.getFullYear(), date.getMonth() - 1, 1));
         }
-        
+
         headlineMonth.appendChild(btnLastMonth);
         headlineMonth.appendChild(headlineMonthSpan);
         headlineMonth.appendChild(btnNextMonth);
 
 
         const headlineYear = document.createElement('div');
-        headlineYear.innerHTML = date.getFullYear();  
+        const headlineYearSpan = document.createElement('span');
+        headlineYearSpan.classList.add('change-txt');
+        headlineYearSpan.innerHTML = date.getFullYear();
+
+
 
         const btnNextYear = document.createElement('button');
-        btnNextYear.innerHTML = 'Next';
-        btnNextYear.onclick = () =>{
-            this.create(new Date(date.getFullYear()+1,date.getMonth(),1));
+        btnNextYear.innerHTML = '--';
+        btnNextYear.classList.add('change-btn');
+        btnNextYear.onclick = () => {
+            this.create(new Date(date.getFullYear() + 1, date.getMonth(), 1));
         }
 
         const btnLastYear = document.createElement('button');
         btnLastYear.innerHTML = 'Last';
-        btnLastYear.onclick = () =>{
-            this.create(new Date(date.getFullYear()-1,date.getMonth(),1));
+        btnLastYear.classList.add('change-btn');
+        btnLastYear.classList.add('change-btn-left');
+        btnLastYear.onclick = () => {
+            this.create(new Date(date.getFullYear() - 1, date.getMonth(), 1));
         }
-        
+
         headlineYear.appendChild(btnLastYear);
+        headlineYear.appendChild(headlineYearSpan);
         headlineYear.appendChild(btnNextYear);
 
 
@@ -134,16 +159,30 @@ export class MyCalender {
             const el = document.createElement('div');
             el.innerHTML = this.dateFormat(today);
             el.classList.add('calender-day');
+            el.onclick = () => {
+                const days = document.querySelectorAll('.calender-day');
+                days.forEach(d => d.classList.remove('calender-day-selected'))
+                el.classList.add('calender-day-selected');
+                this._selectedDay = today;
+            }
 
             // Check if the calenderday now and added a class to the Element
             const currentDay = new Date();
             const currentDayFromated = `${currentDay.getDate()}.${currentDay.getMonth()}.${currentDay.getFullYear()}`
             const todayFromated = `${today.getDate()}.${today.getMonth()}.${today.getFullYear()}`
+            if (this._selectedDay !== null) {
+                const selectedFromated = `${this._selectedDay.getDate()}.${this._selectedDay.getMonth()}.${this._selectedDay.getFullYear()}`
+                if (todayFromated === selectedFromated) {
+                    el.classList.add('calender-day-selected');
+                }
+            }
+
 
             if (todayFromated === currentDayFromated) {
                 el.classList.add('calender-day-today');
-                console.log('YUHUU');
             }
+
+
 
             this.addCW(today, target);
 
