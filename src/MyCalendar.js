@@ -79,12 +79,35 @@ export class MyCalendar {
         return header;
     }
 
+    uiSelect() {
+        const select = document.createElement('div');
+        select.className = 'myc-selectbox'
+        for (let i = -8; i < 8; i++) {
+            const subSelect = document.createElement('div');
+            const text = this.calculateNewDate({ year: i });
+
+            subSelect.className = this.date.getFullYear() === text.getFullYear() 
+            ? 'myc-subselect-active' 
+            : 'myc-subselect';
+
+            subSelect.innerHTML = text.getFullYear();
+            subSelect.onclick = () => {
+              this.changeDate(text);
+            }
+            select.appendChild(subSelect);
+        }
+        return select;
+    }
+
     create() {
         const wrap = document.querySelector(this.target);
         wrap.innerHTML = null;
 
         // Header
         const header = this.uiHeader();
+
+        const select = this.uiSelect();
+
         // Content
         const content = this.uiContent();
 
@@ -92,6 +115,7 @@ export class MyCalendar {
 
         // Build the calendar
         wrap.appendChild(header);
+        wrap.appendChild(select);
         wrap.appendChild(content);
 
 
