@@ -41,8 +41,12 @@ export class MyCalender {
         }
     }
 
-    UI_Header_Button(){
-
+    UI_Header_Button(text, className, newDate){
+        const button = document.createElement('button');
+        button.innerHTML = text;
+        button.classList.add(className);
+        button.onclick = () => this.create(newDate);  
+        return button;
     }
 
     UI_Header() {
@@ -52,8 +56,6 @@ export class MyCalender {
         const month = document.createElement('div');
         const monthTXT = document.createElement('div');
         monthTXT.innerHTML = this._monthName[date.getMonth()];
-
-
     }
 
     create(date = this.date) {
@@ -77,20 +79,25 @@ export class MyCalender {
         headlineMonthSpan.classList.add('change-txt');
         headlineMonthSpan.innerHTML = this._monthName[date.getMonth()];
 
-        const btnNextMonth = document.createElement('button');
-        btnNextMonth.innerHTML = 'NEXT';
-        btnNextMonth.classList.add('change-btn');
-        btnNextMonth.onclick = () => {
-            this.create(new Date(date.getFullYear(), date.getMonth() + 1, 1));
-        }
+        // const btnNextMonth = document.createElement('button');
+        // btnNextMonth.innerHTML = 'NEXT';
+        // btnNextMonth.classList.add('change-btn');
+        // btnNextMonth.onclick = () => {
+        //     this.create(new Date(date.getFullYear(), date.getMonth() + 1, 1));
+        // }
 
-        const btnLastMonth = document.createElement('button');
-        btnLastMonth.innerHTML = 'Last';
-        btnLastMonth.classList.add('change-btn');
-        btnLastMonth.classList.add('change-btn-left');
-        btnLastMonth.onclick = () => {
-            this.create(new Date(date.getFullYear(), date.getMonth() - 1, 1));
-        }
+        const btnNextMonth = this.UI_Header_Button('NEXT', 'change-btn', new Date(date.getFullYear(), date.getMonth() + 1, 1))
+
+        // const btnLastMonth = document.createElement('button');
+        // btnLastMonth.innerHTML = 'Last';
+        // btnLastMonth.classList.add('change-btn');
+        // btnLastMonth.classList.add('change-btn-left');
+        // btnLastMonth.onclick = () => {
+        //     this.create(new Date(date.getFullYear(), date.getMonth() - 1, 1));
+        // }
+
+        const btnLastMonth = this.UI_Header_Button('LAST', 'change-btn-left', new Date(date.getFullYear(), date.getMonth() - 1, 1))
+
 
         headlineMonth.appendChild(btnLastMonth);
         headlineMonth.appendChild(headlineMonthSpan);
@@ -102,22 +109,25 @@ export class MyCalender {
         headlineYearSpan.classList.add('change-txt');
         headlineYearSpan.innerHTML = date.getFullYear();
 
+        // const btnNextYear = document.createElement('button');
+        // btnNextYear.innerHTML = '--';
+        // btnNextYear.classList.add('change-btn');
+        // btnNextYear.onclick = () => {
+        //     this.create(new Date(date.getFullYear() + 1, date.getMonth(), 1));
+        // }
+        const btnNextYear = this.UI_Header_Button('Next', 'change-btn', new Date(date.getFullYear() + 1, date.getMonth(), 1))
 
 
-        const btnNextYear = document.createElement('button');
-        btnNextYear.innerHTML = '--';
-        btnNextYear.classList.add('change-btn');
-        btnNextYear.onclick = () => {
-            this.create(new Date(date.getFullYear() + 1, date.getMonth(), 1));
-        }
+        // const btnLastYear = document.createElement('button');
+        // btnLastYear.innerHTML = 'Last';
+        // btnLastYear.classList.add('change-btn');
+        // btnLastYear.classList.add('change-btn-left');
+        // btnLastYear.onclick = () => {
+        //     this.create(new Date(date.getFullYear() - 1, date.getMonth(), 1));
+        // }
 
-        const btnLastYear = document.createElement('button');
-        btnLastYear.innerHTML = 'Last';
-        btnLastYear.classList.add('change-btn');
-        btnLastYear.classList.add('change-btn-left');
-        btnLastYear.onclick = () => {
-            this.create(new Date(date.getFullYear() - 1, date.getMonth(), 1));
-        }
+        const btnLastYear = this.UI_Header_Button('Last', 'change-btn-left', new Date(date.getFullYear() - 1, date.getMonth(), 1))
+
 
         headlineYear.appendChild(btnLastYear);
         headlineYear.appendChild(headlineYearSpan);
