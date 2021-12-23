@@ -49,13 +49,23 @@ export class MyCalender {
         return button;
     }
 
-    UI_Header() {
+    UI_Header(date) {
         const header = document.createElement('div');
         header.classList.add('calender-headline');
 
         const month = document.createElement('div');
         const monthTXT = document.createElement('div');
         monthTXT.innerHTML = this._monthName[date.getMonth()];
+        const btnNextMonth = this.UI_Header_Button('NEXT', 'change-btn', new Date(date.getFullYear(), date.getMonth() + 1, 1))
+        const btnLastMonth = this.UI_Header_Button('LAST', 'change-btn-left', new Date(date.getFullYear(), date.getMonth() - 1, 1))
+
+        month.appendChild(btnLastMonth);
+        month.appendChild(monthTXT);
+        month.appendChild(btnNextMonth);
+
+        header.appendChild(month);
+        
+        return header;
     }
 
     create(date = this.date) {
@@ -138,6 +148,12 @@ export class MyCalender {
         headline.appendChild(headlineMonth);
         headline.appendChild(headlineYear);
         target.appendChild(headline);
+        const head = this.UI_Header(this.date);
+
+        target.appendChild(head);
+
+
+
 
         const calenderHead = ["KW", "Mo.", "Di.", "Mi.", "Do.", "Fr.", "Sa.", "So."]
 
