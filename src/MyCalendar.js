@@ -14,6 +14,10 @@ export class MyCalendar {
         de: ['Januar', 'Februar', 'März', 'April', 'Mai', 'Juni', 'Juli', 'August', 'September', 'Oktober', 'November', 'Dezember']
     }
 
+    _weekDay = {
+        de: ['Sonntag', 'Montag', 'Dienstag', 'Mittwoch', 'Donerstag', 'Freitag', 'Samstag', 'Sontag']
+    }
+
     uiContent() {
         const content = document.createElement('div');
         content.innerHTML = 'ich bin der Content';
@@ -40,7 +44,7 @@ export class MyCalendar {
 
     uiHeaderControll(type) {
 
-        const possibleTypes = ['day','month','year'];
+        const possibleTypes = ['day', 'month', 'year'];
         const DATE = this.date;
         const wrap = document.createElement('div');
         wrap.className = 'myc-head-control'
@@ -68,10 +72,22 @@ export class MyCalendar {
         return wrap;
     }
 
+    uiHeaderWeekday() {
+        const div = document.createElement('div');
+        div.innerHTML = this._weekDay[this.lang][this.date.getDay()];
+        return div;
+
+    }
+
     uiHeader() {
         const header = document.createElement('div');
         header.classList.add('myc-header');
 
+
+
+
+
+        header.appendChild(this.uiHeaderWeekday());
         header.appendChild(this.uiHeaderControll('day'));
         header.appendChild(this.uiHeaderControll('month'));
         header.appendChild(this.uiHeaderControll('year'));
