@@ -94,35 +94,39 @@ export class MyCalendar {
         const start = startDecade(this.date.getFullYear());
         const end = start + 10;
 
-        for (let ii = start; ii <= end; ii++) {
+        const tenBack = document.createElement('div');
+        tenBack.innerHTML = '-10';
+        tenBack.className = 'myc-subselect';
+        tenBack.onclick = () => {
+            this.changeDate(this.calculateNewDate({year: -10}));
+        }
+        select.appendChild(tenBack);
 
-            
+        for (let ii = start; ii < end; ii++) {
+
+            const subSelect = document.createElement('div');
             const year = this.calculateNewDate({year: ii-this.date.getFullYear()})
             
+            subSelect.className = this.date.getFullYear() === year.getFullYear()
+            ? 'myc-subselect-active'
+            : 'myc-subselect';
 
-            if(this.date.getFullYear() === ii){
-                console.log('>>',year.getFullYear());  
-            } else {
-                console.log(year.getFullYear());
-            }
-        }
-        console.log('-----------')
-
-
-        for (let i = -8; i < 8; i++) {
-            const subSelect = document.createElement('div');
-            const text = this.calculateNewDate({ year: i });
-
-            subSelect.className = this.date.getFullYear() === text.getFullYear()
-                ? 'myc-subselect-active'
-                : 'myc-subselect';
-
-            subSelect.innerHTML = text.getFullYear();
+            subSelect.innerHTML = year.getFullYear();
             subSelect.onclick = () => {
-                this.changeDate(text);
+                this.changeDate(year);
             }
             select.appendChild(subSelect);
+
         }
+
+        const tenForward = document.createElement('div');
+        tenForward.innerHTML = '+10';
+        tenForward.className = 'myc-subselect';
+        tenForward.onclick = () => {
+            this.changeDate(this.calculateNewDate({year: 10}));
+        }
+        select.appendChild(tenForward);
+
         return select;
     }
 
