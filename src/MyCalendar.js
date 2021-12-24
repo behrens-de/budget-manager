@@ -82,17 +82,44 @@ export class MyCalendar {
     uiSelect() {
         const select = document.createElement('div');
         select.className = 'myc-selectbox'
+
+        const date = this.calculateNewDate({ year: -2 });
+        const startYear = date.getFullYear();
+
+        const startDecade = (currentYear) => {
+            return parseInt(currentYear / 10) * 10
+        };
+
+        //const year = this.calculateNewDate({year:-8});
+        const start = startDecade(this.date.getFullYear());
+        const end = start + 10;
+
+        for (let ii = start; ii <= end; ii++) {
+
+            
+            const year = this.calculateNewDate({year: ii-this.date.getFullYear()})
+            
+
+            if(this.date.getFullYear() === ii){
+                console.log('>>',year.getFullYear());  
+            } else {
+                console.log(year.getFullYear());
+            }
+        }
+        console.log('-----------')
+
+
         for (let i = -8; i < 8; i++) {
             const subSelect = document.createElement('div');
             const text = this.calculateNewDate({ year: i });
 
-            subSelect.className = this.date.getFullYear() === text.getFullYear() 
-            ? 'myc-subselect-active' 
-            : 'myc-subselect';
+            subSelect.className = this.date.getFullYear() === text.getFullYear()
+                ? 'myc-subselect-active'
+                : 'myc-subselect';
 
             subSelect.innerHTML = text.getFullYear();
             subSelect.onclick = () => {
-              this.changeDate(text);
+                this.changeDate(text);
             }
             select.appendChild(subSelect);
         }
